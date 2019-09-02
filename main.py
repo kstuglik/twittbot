@@ -1,4 +1,4 @@
-from parserTweets import getTweets
+from parserTweets import *
 from modules import *
 
 
@@ -20,45 +20,76 @@ def menu():
         if choice == "1":
             clear()
             while True:
-                print("[POBIERZ TWEETY WYBRANEJ OSOBY][WYBÓR KATERGORII]:")
+                print("[POBIERZ TWEETY WYBRANEJ OSOBY]:")
                 print("=====================================================")
-                print("     [1] POLITYKA / morawieckim")
-                print("     [2] AKTUALNOSCI / tvp_info")
-                print("     [3] MUZYKA / Piotr_Rubik")
-                print("     [4] INNE / WPROWADZ NICK")
+                print("     [1] TWITTER")
+                print("     [2] PLIK TXT/HTML")
                 print("     [q] WYJDŻ")
                 print("=====================================================")
                 answer = input("[WYBIERAM OPCJE]\n>>  ")
+
                 if answer == "1":
-                    getTweets("morawieckim")
-                elif answer == "2":
-                    getTweets("tvp_info")
-                elif answer == "3":
-                    getTweets("Piotr_Rubik")
-                elif answer == "4":
-
+                    clear()
                     while True:
-                        nick = input("WPROWADZ NICK LUB PRZERWIJ(q)\n>>  ")
+                        print("[POBIERZ TWEETY WYBRANEJ OSOBY][WYBÓR KATERGORII]:")
+                        print("=====================================================")
+                        print("     [1] POLITYKA / morawieckim")
+                        print("     [2] AKTUALNOSCI / tvp_info")
+                        print("     [3] MUZYKA / Piotr_Rubik")
+                        print("     [4] INNE / WPROWADZ NICK")
+                        print("     [q] WYJDŻ")
+                        print("=====================================================")
+                        nextAnswer = input("[WYBIERAM OPCJE]\n>>  ")
+                        if nextAnswer == "1":
+                          getTweetsFromTwitter("morawieckim")
+                        elif nextAnswer == "2":
+                          getTweetsFromTwitter("tvp_info")
+                        elif nextAnswer == "3":
+                          getTweetsFromTwitter("Piotr_Rubik")
+                        elif nextAnswer == "4":
+                          while True:
+                              nick = input("WPROWADZ NICK LUB PRZERWIJ(q)\n>>  ")
 
-                        if nick=="q":
-                            print("PRZERWANO!")
-                            break
+                              if nick=="q":
+                                  print("PRZERWANO!")
+                                  break
 
-                        link = "https://twitter.com/"+str(nick)+"?lang=pl"
-                        ret =  requests.get(link)
+                              link = "https://twitter.com/"+str(nick)+"?lang=pl"
+                              ret =  requests.get(link)
 
-                        if ret.status_code == 200:
-                            break
+                              if ret.status_code == 200:
+                                  break
+                              else:
+                                  print ("URL NOT EXIST!")
+                          getTweetsFromTwitter(nick)
+                        elif nextAnswer == "q":
+                          clear()
+                          break
                         else:
-                            print ("URL NOT EXIST!")
+                          print("nieprawidłowy wybór")
 
-                    getTweets(nick)
+                elif answer == "2":
+                    clear()
+                    while True:
+                        print("[POBIERZ TWEETY WYBRANEJ OSOBY][PLIK TXT/HTML]:")
+                        while True:
+                            pathToFile = input("WPROWADZ ŚCIEŻKĘ DO PLIKU:\n>>  ")
+                            if pathToFile == "q":
+                                break
+                            elif not os.path.exists(pathToFile):
+                                print("NIE ISTNIEJE!")
+                            else:
+                                clear()
+                                print("OK - POLECENIE W TRAKCIE PRZETWARZANIA")
+                                getTweetsFromFile(pathToFile)
+                                break
+                        break
+                    break
                 elif answer == "q":
                     clear()
                     break
                 else:
                     print("nieprawidłowy wybór")
-
         if choice == "2":
             clear()
 
