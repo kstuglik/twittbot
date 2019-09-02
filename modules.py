@@ -44,6 +44,7 @@ def updateFile(fileName, dictionary):
     file = open(fileName,"w")
     json.dump(dictionary,file)
     file.close()
+    print("--- OK - ZAPISANO ZAWARTOŚĆ SŁOWNIKA: "+fileName+" ---")
 
 def getNextWord(lastWord,dictionary):
     if lastWord not in dictionary:

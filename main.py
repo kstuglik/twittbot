@@ -51,7 +51,7 @@ def menu():
                               nick = input("WPROWADZ NICK LUB PRZERWIJ(q)\n>>  ")
 
                               if nick=="q":
-                                  print("PRZERWANO!")
+                                  print("--- PRZERWANO! ---")
                                   break
 
                               link = "https://twitter.com/"+str(nick)+"?lang=pl"
@@ -60,13 +60,13 @@ def menu():
                               if ret.status_code == 200:
                                   break
                               else:
-                                  print ("URL NOT EXIST!")
+                                  print ("--- URL NOT EXIST! ---")
                           getTweetsFromTwitter(nick)
                         elif nextAnswer == "q":
                           clear()
                           break
                         else:
-                          print("nieprawidłowy wybór")
+                          print("--- NIEPRAWIDŁOWY WYBÓR ---")
 
                 elif answer == "2":
                     clear()
@@ -77,10 +77,10 @@ def menu():
                             if pathToFile == "q":
                                 break
                             elif not os.path.exists(pathToFile):
-                                print("NIE ISTNIEJE!")
+                                print("--- PODANY ŚCIEŻKA NIE ISTNIEJE! ---")
                             else:
                                 clear()
-                                print("OK - POLECENIE W TRAKCIE PRZETWARZANIA")
+                                print("--- OK - POLECENIE W TRAKCIE PRZETWARZANIA ---")
                                 getTweetsFromFile(pathToFile)
                                 break
                         break
@@ -89,93 +89,108 @@ def menu():
                     clear()
                     break
                 else:
-                    print("nieprawidłowy wybór")
+                    print("--- NIEPRAWIDŁOWY WYBÓR ---")
         if choice == "2":
             clear()
+            dictFile = input("WPROWADZ NAZWĘ PLIKU DLA SŁOWNIKA\n>>  ").lower()
 
-            dictFile = input("WPROWADZ NAZWĘ PLIKU SŁOWNIKA Z *.json\n>>  ")
-            if not os.path.exists(dictFile):
-                file = open(dictFile,"w")
-                json.dump({},file)
-                file.close()
-            file = open(dictFile,"r")
+            if ".json" not in dictFile:
+              dictFile += ".json"
+
+            if not os.path.exists("dicts"):
+                os.makedirs("dicts")
+
+            ff = "dicts//"+dictFile
+
+            if not os.path.exists(ff):
+              file = open(ff,"w+")
+              json.dump({},file)
+              file.close()
+
+            file = open(ff,"r")
 
             dictionary = json.load(file)
             file.close()
 
-            clear()
+            # clear()
 
             while True:
-                print("[UTWÓRZ SŁOWNIK]:\n")
-                print("=====================================================")
-                print("     [1] Z PLIKU TEKSTOWEGO")
-                print("     [2] Z TEKSTU WPROWADZONEGO Z KLAWIATURY")
-                print("     [q] WYJDŻ")
-                print("=====================================================")
-                answer = input("[WYBIERAM OPCJE]\n>>  ")
-                clear()
-                if answer == "1":
+              print("[UTWÓRZ SŁOWNIK]:\n")
+              print("=====================================================")
+              print("     [1] Z PLIKU TEKSTOWEGO")
+              print("     [2] Z TEKSTU WPROWADZONEGO Z KLAWIATURY")
+              print("     [q] WYJDŻ")
+              print("=====================================================")
+              answer = input("[WYBIERAM OPCJE]\n>>  ")
+              clear()
+              if answer == "1":
 
-                    while True:
-                        print("\n[PRZYKŁADOWA LOKALIZACJA PLIKU: tweets/t_nick.txt]\n")
-                        inputFile = input("WPROWADZ LOKALIZACJE PLIKU, KTÓRY CHCESZ WCZYTAĆ LUB PRZERWIJ(q)\n>>  ")
-                        if inputFile == "q":
-                            clear()
-                            break
-                        elif not os.path.exists(inputFile):
-                            print("NIE ODNALEZIONO!")
-                        else:
-                            break
+                  while True:
+                      print("[PRZYKŁADOWA LOKALIZACJA: tweets/nazwa_kontaT.txt]")
+                      inputFile = input("WPROWADZ LOKALIZACJE PLIKU TEKSTOWEGO LUB PRZERWIJ(q)\n>>  ")
+                      if inputFile == "q":
+                          clear()
+                          break
+                      elif not os.path.exists(inputFile):
+                          print("--- NIE ODNALEZIONO! ---")
+                      else:
+                          break
 
-                    if inputFile!="q":
-                        f=open(inputFile, "r")
-                        if f.mode == 'r':
-                            # contents =f.read()
-                            fileName =f.read()
-                            print (fileName)
+                  if inputFile!="q":
+                      f=open(inputFile, "r")
+                      if f.mode == 'r':
+                          # contents =f.read()
+                          fileName =f.read()
+                          print("--- OK - WCZYTANO ZAWARTOŚĆ PLIIKU ---")
 
-                            dictionary = learn(dictionary,fileName)
-                            updateFile(dictFile,dictionary)
-                    break
-                elif answer == "2":
-                    while True:
-                        fileName = input("WPROWADZ TEKST\n>>  ")
-                        if fileName == "":
-                            break
-                        dictionary = learn(dictionary,fileName)
-                        updateFile(dictFile,dictionary)
-                    break
-                elif answer == "q":
-                    clear()
-                    break
-                else:
-                    print("nieprawidłowy wybór")
+                          dictionary = learn(dictionary,fileName)
+                          #poprawić sposob budowania slownika
+                          updateFile(ff,dictionary)
+                  break
+              elif answer == "2":
+                  while True:
+                      fileName = input("WPROWADZ TEKST\n>>  ")
+                      if fileName == "":
+                          break
+                      dictionary = learn(dictionary,fileName)
+                      updateFile(ff,dictionary)
+                  break
+              elif answer == "q":
+                  clear()
+                  break
+              else:
+                  print("--- NIEPRAWIDŁOWY WYBÓR ---")
         if choice == "3":
             clear()
-            print("[WYGENERUJ TEKST NA PODSTAWIE SŁOWNIKA]\n")
+            print("[WYGENERUJ TEKST NA PODSTAWIE SŁOWNIKA]")
+            print("[PRZYKŁADOWA LOKALIZACJA: dicts/nazwa_słownika.json]")
             while True:
-                answer = input("WPROWADŹ NAZWĘ ISTNIEJĄCEGO SŁOWNIKA *.json LUB PRZERWIJ(q)\n>>  ")
+                answer = input("\nWPROWADZ ŚCIEŻKĘ DLA PLIKU SŁOWNIKA LUB PRZERWIJ(q)\n>>  ")
                 if answer == "q":
                     clear()
                     break
                 elif not os.path.exists(answer):
-                    print("NIE ODNALEZIONO!")
+                    print("--- NIE ODNALEZIONO! ---")
                 else:
                     break
 
             if answer!="q":
                 dictionary = loadDict(answer)
 
-                length = input("OKREŚL LICZBĘ WYRAZÓW W WIADOMOŚCI\n>>  ")
+                while True:
+                    length = input("OKREŚL LICZBĘ WYRAZÓW DLA WYGENEROWANEJ WIADOMOŚCI LUB PRZERWIJ(q)\n>>  ")
 
-                lastWord = ""
-                result = ""
+                    if length == "q":
+                        break
 
-                for i in range(0,int(length)):
-                    newWord = getNextWord(lastWord,dictionary)
-                    result = result + " " + newWord
-                    lastWord = newWord
-                print("\n"+result+"\n")
+                    lastWord = ""
+                    result = ""
+
+                    for i in range(0,int(length)):
+                        newWord = getNextWord(lastWord,dictionary)
+                        result = result + " " + newWord
+                        lastWord = newWord
+                    print("\n"+result+"\n")
         if choice == "4":
             clear()
         if choice == "q":
