@@ -4,8 +4,19 @@ import requests
 import os
 
 def processTweets(data,lokalizacja):
+    keyWordClass = 'TweetTextSize'
+
+    while True:
+        print("PARSOWANIE TEKSTU ODBYWA SIE DLA ZNACZNIKOW Z ATRYBUTEM CLASS = 'TweetTextSize'\nCZY ZACHOWAĆ USTAWIENIA? [t/n]")
+        odpowiedz = input(">>   ").lower()
+        if(odpowiedz=="t"):
+            break
+        elif(odpowiedz=="n"):
+            keyWordClass=input("WPROWADZ INNĄ WARTOŚĆ DLA ATRYBUTU: CLASS\n>>   ")
+            break
+
     soup = BeautifulSoup(data, 'lxml')
-    elems = soup.find_all(True, class_='TweetTextSize')
+    elems = soup.find_all(True, class_=keyWordClass)
 
     print("\n")
     for elem in elems:
