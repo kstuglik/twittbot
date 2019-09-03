@@ -8,11 +8,11 @@ def menu():
 
     while True:
         print("=========================MENU========================")
-        print("[1]  POBIERZ TWEETY WYBRANEJ OSOBY")
+        print("[1]  POBIERZ TEKST Z TWEETOW/HTML")
         print("[2]  UTWÓRZ SŁOWNIK")
-        print("[3]  WYGENERUJ TEKST NA PODSTAWIE SŁOWNIKA")
-        print("[4]  WYCZYSC EKRAN W OKNIE KONSOLI")
-        print("[q]  ZAKOŃCZ DZIAŁANIE PROGRAMU")
+        print("[3]  WYGENERUJ TEKST ZE SŁOWNIKA")
+        print("[4]  WYCZYSC EKRAN")
+        print("[q]  ZAKOŃCZ")
         print("=====================================================")
 
         choice = input("[WYBIERAM OPCJE]\n>>  ")
@@ -20,10 +20,10 @@ def menu():
         if choice == "1":
             clear()
             while True:
-                print("[POBIERZ TWEETY WYBRANEJ OSOBY]:")
+                print("[POBIERZ TEKST Z TWEETOW/HTML][WYBIERZ ŹRÓDŁO]:")
                 print("=====================================================")
-                print("     [1] TWITTER")
-                print("     [2] PLIK TXT/HTML")
+                print("     [1] TWITTER [nick]")
+                print("     [2] PLIK TXT/HTML [CLASS='']")
                 print("     [q] WYJDŻ")
                 print("=====================================================")
                 answer = input("[WYBIERAM OPCJE]\n>>  ")
@@ -31,7 +31,7 @@ def menu():
                 if answer == "1":
                     clear()
                     while True:
-                        print("[POBIERZ TWEETY WYBRANEJ OSOBY][WYBÓR KATERGORII]:")
+                        print("[POBIERZ TEKST Z TWEETOW/HTML][WYBIERZ KATERGORIE]:")
                         print("=====================================================")
                         print("     [1] POLITYKA / morawieckim")
                         print("     [2] AKTUALNOSCI / tvp_info")
@@ -71,13 +71,13 @@ def menu():
                 elif answer == "2":
                     clear()
                     while True:
-                        print("[POBIERZ TWEETY WYBRANEJ OSOBY][PLIK TXT/HTML]:")
+                        print("[POBIERZ TEKST Z TWEETOW][PLIK TXT/HTML]:")
                         while True:
                             pathToFile = input("WPROWADZ ŚCIEŻKĘ DO PLIKU:\n>>  ")
                             if pathToFile == "q":
                                 break
                             elif not os.path.exists(pathToFile):
-                                print("--- PODANY ŚCIEŻKA NIE ISTNIEJE! ---")
+                                print("--- PODANA ŚCIEŻKA NIE ISTNIEJE! ---")
                             else:
                                 clear()
                                 print("--- OK - POLECENIE W TRAKCIE PRZETWARZANIA ---")
@@ -92,7 +92,7 @@ def menu():
                     print("--- NIEPRAWIDŁOWY WYBÓR ---")
         if choice == "2":
             clear()
-            dictFile = input("WPROWADZ NAZWĘ PLIKU DLA SŁOWNIKA\n>>  ").lower()
+            dictFile = input("WPROWADZ NAZWĘ SŁOWNIKA:\n>>  ").lower()
 
             if ".json" not in dictFile:
               dictFile += ".json"
@@ -118,7 +118,7 @@ def menu():
               print("[UTWÓRZ SŁOWNIK]:\n")
               print("=====================================================")
               print("     [1] Z PLIKU TEKSTOWEGO")
-              print("     [2] Z TEKSTU WPROWADZONEGO Z KLAWIATURY")
+              print("     [2] Z KLAWIATURY")
               print("     [q] WYJDŻ")
               print("=====================================================")
               answer = input("[WYBIERAM OPCJE]\n>>  ")
