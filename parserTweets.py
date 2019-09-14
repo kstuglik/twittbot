@@ -35,9 +35,19 @@ def processTweets(data,lokalizacja):
     for elem in elems:
         i+=1
         f.write("#"+str(i)+"\n"+elem.get_text()+"\n")
-        f2.write(elem.get_text())
+
+        new_words = elem.get_text().split(" ")
+
+        for word in new_words:
+            if word.find(".com") != -1 or word.find("pic.") != -1 or word.find("http") != -1 or word.find("#") != -1:
+                print("usuwam: "+word)
+                new_words.remove(word)
+
+        f2.writelines(' '.join(new_words))
+
     f.close()
     f2.close()
+
     print("ZAPISANO "+str(i)+" TWEETOW:\n"+lokalizacja+"P.txt\n"+lokalizacja+"T.txt\n")
 
 def getTweetsFromTwitter(nick):
